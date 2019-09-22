@@ -1,3 +1,4 @@
+import { stringify } from "querystring";
 import { isNull } from "util";
 import PriorityQueue from "./priorityQueue";
 import TreeNode from "./tree";
@@ -35,10 +36,32 @@ export default class HuffmanCompressor {
 
     // Get root of Huffman Tree
     const root = pQueue.dequeue();
-
     // Build Huffman Codes
     const codes = this.parseHuffmanTree(root);
-    console.log(codes);
+    const compressedString = text
+      .split("")
+      .map((char) => codes.get(char))
+      .join("");
+    return {compressedString, root};
+  }
+
+  /**
+   * decompress
+   */
+  public decompress(compressedString: string, tree: TreeNode) {
+    const root = tree;
+
+    let text = "";
+    let curNode = root;
+    for (const i of compressedString) {
+      curNode = i === "0" ? curNode.left : curNode.right;
+      if (!isNull(curNode.item.char)) {
+        text += curNode.item.char;
+        curNode = root;
+      }
+    }
+
+    return text;
   }
 
   private parseHuffmanTree(
@@ -50,7 +73,6 @@ export default class HuffmanCompressor {
 
     if (!isNull(item.char)) {
       map.set(item.char, prefix);
-      console.log(item.char, prefix);
     }
 
     if (!isNull(left)) {
