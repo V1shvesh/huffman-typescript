@@ -5,8 +5,10 @@ import Huffman from "./huffman";
 
 const compressor = new Huffman();
 
+const originalString = "assassin";
+
 // Compression
-const {compressedString, root} = compressor.compress("assassin");
+const {compressedString, root} = compressor.compress(originalString);
 const JSONTree = JSON.stringify(root.toObject(), null, 2);
 process.stdout.write(`Compressed String: ${compressedString}\n`);
 // process.stdout.write(`Tree: ${JSONTree}`);
