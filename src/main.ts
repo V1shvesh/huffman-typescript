@@ -1,11 +1,17 @@
-import { readFile, writeFile } from "fs";
+import { readFileSync, writeFile } from "fs";
 import { join } from "path";
 
 import Huffman from "./huffman";
 
 const compressor = new Huffman();
 
-const originalString = "assassin";
+process.stdout.write(`
+  Reading ./dist/input.txt...\n
+`);
+
+const originalString = readFileSync("./dist/input.txt", "utf-8");
+
+process.stdout.write(`Original String: ${originalString}\n`);
 
 // Compression
 const {compressedString, root} = compressor.compress(originalString);
